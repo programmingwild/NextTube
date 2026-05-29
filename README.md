@@ -31,23 +31,15 @@ By working on this project, the key learning objectives were:
 
 Activities and Tasks
 
-The development of YourTube involved several major tasks:
-
-✅ Project Setup – Initialized the React.js project, installed dependencies, and set up Redux.
-
-✅ Video Grid & Video Player – Implemented a dynamic video grid that displays videos and a fully functional video player.
-
-✅ Search and Sidebar – Created a search bar for real-time video filtering and a sidebar for navigation.
-
-✅ Comments Section – Developed an interactive comments system for user engagement.
-
-✅ Private Room Chat – Implemented end-to-end encrypted real-time private chat rooms.
-
-✅ Video Download Feature – Enabled users to download one video per day for free and integrated Razorpay for premium downloads.
-
-✅ UI Enhancements – Added gesture-based controls, hover effects, and smooth transitions.
-
-✅ Deployment – Uploaded the project to GitHub and deployed it on Netlify.
+✔ The development of YourTube involved several major tasks:
+✔ Project Setup – Initialized the React.js project, installed dependencies, and set up Redux.
+✔ Video Grid & Video Player – Implemented a dynamic video grid that displays videos and a fully functional video player.
+✔ Search and Sidebar – Created a search bar for real-time video filtering and a sidebar for navigation.
+✔ Comments Section – Developed an interactive comments system for user engagement.
+✔ Private Room Chat – Implemented end-to-end encrypted real-time private chat rooms.
+✔ Video Download Feature – Enabled users to download one video per day for free and integrated Razorpay for premium downloads.
+✔ UI Enhancements – Added gesture-based controls, hover effects, and smooth transitions.
+✔ Deployment – Uploaded the project to GitHub and deployed it on Vercel.
 
 Skills and Competencies
 
