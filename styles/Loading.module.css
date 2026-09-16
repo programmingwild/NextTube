@@ -1,0 +1,16 @@
+.page { padding: 0; }
+.chips { display: flex; gap: 12px; padding: 12px 24px; }
+.chip { width: 90px; height: 32px; border-radius: 8px; background: var(--yt-surface-2); animation: pulse 1.4s ease-in-out infinite; }
+.grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; padding: 16px 24px 40px;
+}
+.card { display: flex; flex-direction: column; }
+.thumb { aspect-ratio: 16/9; border-radius: 12px; background: var(--yt-surface-2); animation: pulse 1.4s ease-in-out infinite; }
+.row { display: flex; gap: 12px; padding-top: 12px; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--yt-surface-2); flex-shrink: 0; animation: pulse 1.4s ease-in-out infinite; }
+.line { height: 14px; border-radius: 6px; background: var(--yt-surface-2); margin-bottom: 8px; animation: pulse 1.4s ease-in-out infinite; }
+.short { width: 60%; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+@media (max-width: 1400px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }

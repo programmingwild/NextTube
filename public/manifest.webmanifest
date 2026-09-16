@@ -1,0 +1,17 @@
+{
+  "name": "YourTubeNext",
+  "short_name": "YourTube",
+  "description": "YourTube clone on Next.js",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff0000",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

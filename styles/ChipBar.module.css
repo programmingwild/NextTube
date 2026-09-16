@@ -1,0 +1,19 @@
+.chipBar {
+  display: flex; gap: 12px;
+  padding: 12px 24px;
+  overflow-x: auto;
+  background: var(--yt-bg);
+  position: sticky; top: 56px; z-index: 100;
+  scrollbar-width: none;
+}
+.chipBar::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  height: 32px; padding: 0 12px;
+  border: none; border-radius: 8px;
+  background: var(--yt-chip); color: var(--yt-text);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: background 0.15s;
+}
+.chip:hover { background: var(--yt-chip-hover); }
+.chip.active { background: var(--yt-text); color: var(--yt-bg); }

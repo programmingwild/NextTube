@@ -1,0 +1,11 @@
+.videoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 16px;
+  padding: 16px 24px 40px;
+  background: var(--yt-bg);
+}
+.empty { grid-column: 1 / -1; color: var(--yt-text-2); padding: 40px 0; text-align: center; }
+
+@media (max-width: 1400px) { .videoGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) { .videoGrid { grid-template-columns: 1fr; padding: 12px 12px 30px; } }

@@ -1,0 +1,24 @@
+.shortsPage {
+  height: calc(100vh - 56px);
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  background: var(--yt-bg); padding: 16px; overflow: hidden;
+}
+.frame {
+  height: min(82vh, 760px); aspect-ratio: 9 / 16;
+  background: #000; border-radius: 16px; overflow: hidden;
+  position: relative; box-shadow: var(--yt-shadow);
+}
+.frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rail { display: flex; flex-direction: column; gap: 12px; }
+.rail button {
+  width: 48px; height: 48px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--yt-surface-2); color: var(--yt-text);
+  display: grid; place-items: center; font-size: 19px;
+}
+.rail button:hover { background: var(--yt-surface-3); }
+.rail span { font-size: 12px; color: var(--yt-text); text-align: center; font-weight: 500; }
+.meta { position: absolute; left: 12px; right: 12px; bottom: 12px; color: #fff; }
+.meta b { display: block; font-size: 14px; margin-bottom: 4px; }
+.meta p { font-size: 12px; opacity: 0.9; }
+.back { position: absolute; top: 70px; left: 24px; z-index: 5; }
+.back a { color: var(--yt-text); font-weight: 500; }
