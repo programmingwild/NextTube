@@ -1,0 +1,30 @@
+.createRow { display: flex; gap: 8px; }
+.createRow input {
+  flex: 1; height: 40px; border-radius: 10px; padding: 0 14px;
+  border: 1px solid var(--yt-input-border); background: var(--yt-input-bg);
+  color: var(--yt-text); font-size: 14px; outline: none;
+}
+.createRow input:focus { border-color: #1c62b9; }
+.createRow button {
+  height: 40px; padding: 0 20px; border: none; border-radius: 10px;
+  background: var(--yt-text); color: var(--yt-bg);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+}
+.card {
+  display: flex; align-items: center; gap: 16px; justify-content: space-between;
+  background: var(--yt-surface); border-radius: 14px; padding: 14px;
+  box-shadow: var(--yt-shadow);
+}
+.main { display: flex; gap: 14px; align-items: center; flex: 1; min-width: 0; }
+.stack { display: flex; }
+.stack img, .emptyThumb {
+  width: 96px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px;
+  background: var(--yt-surface-2); border: 2px solid var(--yt-surface);
+  margin-left: -56px;
+}
+.stack img:first-child, .emptyThumb { margin-left: 0; }
+.emptyThumb {
+  display: grid; place-items: center; font-size: 12px; color: var(--yt-text-2);
+}
+.name { font-size: 16px; font-weight: 500; }
+.count { font-size: 12px; color: var(--yt-text-2); margin-top: 4px; }

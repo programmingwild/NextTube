@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
+
+:root {
+  --yt-bg: #f9f9f9;
+  --yt-surface: #ffffff;
+  --yt-surface-2: #f2f2f2;
+  --yt-surface-3: #e5e5e5;
+  --yt-text: #0f0f0f;
+  --yt-text-2: #606060;
+  --yt-text-3: #909090;
+  --yt-border: #e5e5e5;
+  --yt-input-border: #ccc;
+  --yt-input-bg: #ffffff;
+  --yt-search-btn: #f8f8f8;
+  --yt-chip: #f2f2f2;
+  --yt-chip-hover: #e5e5e5;
+  --yt-header: #ffffff;
+  --yt-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --yt-bg: #0f0f0f;
+  --yt-surface: #212121;
+  --yt-surface-2: #272727;
+  --yt-surface-3: #3d3d3d;
+  --yt-text: #f1f1f1;
+  --yt-text-2: #aaaaaa;
+  --yt-text-3: #717171;
+  --yt-border: #3d3d3d;
+  --yt-input-border: #303030;
+  --yt-input-bg: #121212;
+  --yt-search-btn: #222222;
+  --yt-chip: #272727;
+  --yt-chip-hover: #3d3d3d;
+  --yt-header: #0f0f0f;
+  --yt-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  color-scheme: dark;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { min-height: 100%; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Roboto", "Inter", system-ui, sans-serif;
+  background: var(--yt-bg);
+  color: var(--yt-text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.25s, color 0.25s;
+}
+
+body::before, body::after { content: none !important; }
+
+code { font-family: ui-monospace, Menlo, monospace; }
+a { color: inherit; text-decoration: none; }
+
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c9c9c9; border-radius: 8px; border: 3px solid var(--yt-bg); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #4d4d4d; }
+::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+.mainContent { display: flex; flex: 1; align-items: flex-start; }
+.content { flex: 1; min-width: 0; }
+.grain::after { content: none !important; }
