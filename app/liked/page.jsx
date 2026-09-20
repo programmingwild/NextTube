@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaRegHeart } from "react-icons/fa";
 import styles from "../../styles/SearchPage.module.css";
-import { videos } from "../../lib/videos";
+import DbThumb from "../../components/DbThumb";
+import { rowKey, videos } from "../../lib/videos";
 import { cloudGetLikes } from "../../lib/cloud";
 
 function catalogOf() {
@@ -48,9 +49,15 @@ export default function LikedPage() {
       </h1>
       {list.length === 0 && <p className={styles.empty}>Videos you like will show up here. Tap Like under any video.</p>}
       {list.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>

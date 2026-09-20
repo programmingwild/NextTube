@@ -1,7 +1,7 @@
 {
-  "name": "YourTubeNext",
-  "short_name": "YourTube",
-  "description": "YourTube clone on Next.js",
+  "name": "NextTube – YouTube Clone",
+  "short_name": "NextTube",
+  "description": "NextTube – YouTube Clone built with Next.js",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

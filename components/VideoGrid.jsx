@@ -13,14 +13,20 @@ const VideoGrid = () => {
   const [uploads, setUploads] = useState([]);
   const [personalized, setPersonalized] = useState(false);
   const [hidden, setHidden] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    setUploads(store.getUploads());
-    setPersonalized(hasSignals());
-    try {
-      setHidden(JSON.parse(localStorage.getItem("yt-hidden") || "[]").map(String));
-    } catch {}
+    // Short skeleton like real YouTube for perceived speed
+    const t = setTimeout(() => {
+      setUploads(store.getUploads());
+      setPersonalized(hasSignals());
+      try {
+        setHidden(JSON.parse(localStorage.getItem("yt-hidden") || "[]").map(String));
+      } catch {}
+      setLoading(false);
+    }, 450);
+    return () => clearTimeout(t);
   }, []);
 
   const mine = chip === "All" ? uploads : uploads.filter((v) => v.category === chip);
@@ -30,6 +36,25 @@ const VideoGrid = () => {
   const hide = (id) => setHidden((h) => [...h, String(id)]);
   const first = list.slice(0, 6);
   const rest = list.slice(6);
+
+  if (loading) {
+    return (
+      <>
+        <ChipBar active={chip} onChange={setChip} />
+        <div className={styles.videoGrid}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className={styles.skeleton}>
+              <div className={styles.skeletonThumb} />
+              <div className={styles.skeletonRow}>
+                <div className={styles.skeletonAvatar} />
+                <div className={styles.skeletonLines}><span /><span /></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

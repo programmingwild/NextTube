@@ -5,7 +5,8 @@ import Link from "next/link";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import styles from "../../styles/SearchPage.module.css";
 import plStyles from "../../styles/Playlists.module.css";
-import { videos, store } from "../../lib/videos";
+import DbThumb from "../../components/DbThumb";
+import { findVideo, store } from "../../lib/videos";
 
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState(null);
@@ -45,18 +46,14 @@ export default function PlaylistsPage() {
       </div>
       {playlists.length === 0 && <p className={styles.empty}>No playlists yet. Create one, then add videos from any watch page.</p>}
       {playlists.map((p) => {
-        const thumbs = p.ids.slice(0, 3).map((id) => {
-          const v = videos.find((x) => String(x.id) === String(id));
-          return v?.thumbnail;
-        }).filter(Boolean);
+        const thumbVideos = p.ids.slice(0, 3).map((id) => findVideo(id)).filter(Boolean);
         return (
           <div key={p.id} className={plStyles.card}>
             <Link href={`/playlists/${p.id}`} className={plStyles.main}>
               <div className={plStyles.stack}>
-                {thumbs.length === 0 && <span className={plStyles.emptyThumb}>Empty</span>}
-                {thumbs.map((t, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={i} src={t} alt="" loading="lazy" />
+                {thumbVideos.length === 0 && <span className={plStyles.emptyThumb}>Empty</span>}
+                {thumbVideos.map((v) => (
+                  <DbThumb key={v.id} video={v} />
                 ))}
               </div>
               <div>

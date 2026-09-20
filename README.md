@@ -1,4 +1,4 @@
-# YourTubeNext
+# NextTube – YouTube Clone
 
 A YouTube clone built with Next.js 15 (App Router). Migrated from the
 CRA-based `yourtubeclone` and rebuilt with a faithful youtube.com UI.

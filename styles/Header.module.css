@@ -9,6 +9,10 @@
   height: 56px;
   padding: 0 16px;
   background: var(--yt-header);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom: 1px solid var(--yt-glass-border);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 8px 24px -12px rgba(0,0,0,0.35);
 }
 .left, .center, .right { display: flex; align-items: center; }
 .left { gap: 16px; min-width: 169px; }
@@ -57,10 +61,25 @@
   width: 8px; height: 8px; border-radius: 50%; background: #065fd4;
 }
 
-.logo { display: inline-flex; align-items: flex-start; padding: 0 6px; }
-.logoImage { height: 20px; }
-[data-theme="dark"] .logoImage { filter: brightness(0) invert(1); }
-.countryCode { font-size: 10px; color: var(--yt-text-2); margin-left: 3px; margin-top: -4px; }
+.logo { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px 4px 2px; border-radius: 12px; transition: transform 0.15s, background 0.15s; }
+.logo:hover { background: var(--yt-surface-2); transform: translateY(-1px); }
+.logo:active { transform: translateY(0) scale(0.98); }
+.logoMark {
+  width: 32px; height: 22px; border-radius: 7px; display: grid; place-items: center;
+  background: linear-gradient(145deg, #ff0033 0%, #c40026 60%, #8f001b 100%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -2px 4px rgba(0,0,0,0.35), 0 4px 10px -2px rgba(255,0,51,0.6), 0 1px 2px rgba(0,0,0,0.3);
+  position: relative;
+}
+.logoMark::after {
+  content: ""; position: absolute; inset: 0; border-radius: 7px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.35), transparent 45%);
+  pointer-events: none;
+}
+.logoPlay { width: 0; height: 0; border-left: 9px solid #fff; border-top: 5.5px solid transparent; border-bottom: 5.5px solid transparent; margin-left: 2px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4)); }
+.logoWord { font-size: 19px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.logoWord span { color: var(--yt-text-2); font-weight: 400; }
+.countryCode { font-size: 10px; color: var(--yt-text-2); margin-left: 1px; margin-top: -10px; }
+.listening { background: #c00 !important; color: #fff !important; animation: yt-pulse-live 1.2s infinite; }
 
 .searchContainer { display: flex; align-items: center; flex: 1; max-width: 536px; }
 .searchWrap { position: relative; flex: 1; max-width: 536px; display: flex; }
@@ -134,11 +153,38 @@
 }
 @keyframes popIn { from { opacity: 0; } }
 
+.mobileSearchBtn { display: none; }
+.mobileSearchBar {
+  display: none; flex: 1; align-items: center; gap: 8px; min-width: 0;
+}
+/* Mobile: icon-driven search like real YouTube (full-width bar) */
 @media (max-width: 720px) {
-  .header { gap: 8px; padding: 0 8px; }
+  .header {
+    gap: 8px;
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+  }
   .left, .right { min-width: 0; }
+  .center { display: none; }
+  .mobileSearchBtn { display: inline-grid; }
   .createButton span { display: none; }
   .createButton { padding: 0 10px; }
   .micButton { display: none; }
   .searchButton { width: 48px; }
+  .searchOpen .left, .searchOpen .center, .searchOpen .right { display: none; }
+  .searchOpen .mobileSearchBar { display: flex; }
+  .logoWord span { display: none; }
+}
+/* Very small phones (~360px): compact the header so it never
+   overflows horizontally (overflow = whole page looks desktop-like) */
+@media (max-width: 480px) {
+  .header { gap: 4px; }
+  .left { gap: 4px; }
+  .right { gap: 2px; }
+  .logo { padding: 4px 2px; gap: 4px; }
+  .logoWord { font-size: 16px; }
+  .createButton { display: none; }
+  .iconButton { width: 36px; height: 36px; }
+  .avatar { width: 30px; height: 30px; }
+  .notifPanel { right: -52px; width: min(360px, 94vw); }
 }

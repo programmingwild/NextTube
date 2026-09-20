@@ -1,6 +1,7 @@
 .page { max-width: 1100px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; background: var(--yt-bg); color: var(--yt-text); min-height: calc(100vh - 56px); }
 .heading { font-size: 16px; font-weight: 400; }
-.row { display: flex; gap: 16px; cursor: pointer; }
+.row { display: flex; gap: 16px; cursor: pointer; border-radius: 12px; }
+.row:focus-visible { outline: 2px solid #1c62b9; outline-offset: 4px; }
 .row img { width: 400px; max-width: 40vw; aspect-ratio: 16/9; object-fit: cover; border-radius: 12px; background: var(--yt-surface-2); flex-shrink: 0; }
 .title { font-size: 18px; font-weight: 400; line-height: 1.4; margin-bottom: 6px; }
 .meta { font-size: 12px; color: var(--yt-text-2); margin-bottom: 10px; }

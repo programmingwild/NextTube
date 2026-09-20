@@ -35,10 +35,24 @@ const subscriptions = [
 ];
 
 const Sidebar = () => {
-  const { isCollapsed } = useSidebar();
+  const { isCollapsed, mobileOpen, closeMobile } = useSidebar();
 
   return (
-    <nav className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""}`}>
+    <>
+      {mobileOpen && (
+        <div
+          className={styles.backdrop}
+          onClick={closeMobile}
+          aria-hidden
+        />
+      )}
+      <nav
+        className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""} ${mobileOpen ? styles.drawerOpen : ""}`}
+        onClick={(e) => {
+          // Close drawer when any link inside is tapped
+          if (e.target.closest("a")) closeMobile();
+        }}
+      >
       <ul>
         <li className={styles.active}>
           <Link href="/" className={styles.link}>
@@ -136,7 +150,8 @@ const Sidebar = () => {
           {!isCollapsed && "Send feedback"}
         </li>
       </ul>
-    </nav>
+      </nav>
+    </>
   );
 };
 

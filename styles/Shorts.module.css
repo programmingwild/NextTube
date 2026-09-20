@@ -22,3 +22,30 @@
 .meta p { font-size: 12px; opacity: 0.9; }
 .back { position: absolute; top: 70px; left: 24px; z-index: 5; }
 .back a { color: var(--yt-text); font-weight: 500; }
+/* Phones: full-bleed player with floating action rail like real Shorts */
+@media (max-width: 640px) {
+  .shortsPage {
+    height: calc(100dvh - 56px);
+    padding: 0; gap: 0; position: relative; overflow: hidden;
+  }
+  .frame { height: 100%; width: 100%; aspect-ratio: auto; border-radius: 0; }
+  .rail {
+    position: absolute; right: 8px; bottom: calc(76px + env(safe-area-inset-bottom));
+    flex-direction: column; gap: 14px; z-index: 3;
+  }
+  .rail button {
+    width: 46px; height: 46px;
+    background: rgba(10,10,10,0.55); color: #fff;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+  .rail span { color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+  .back { top: calc(66px + env(safe-area-inset-top)); left: 12px; }
+  .back a {
+    display: inline-grid; place-items: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(10,10,10,0.55); color: #fff;
+    backdrop-filter: blur(8px);
+  }
+  .meta { bottom: calc(16px + env(safe-area-inset-bottom)); }
+}

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MdSubscriptions } from "react-icons/md";
 import styles from "../../styles/SearchPage.module.css";
-import { videos } from "../../lib/videos";
+import DbThumb from "../../components/DbThumb";
+import { allVideos, rowKey } from "../../lib/videos";
 import { cloudGetSubs } from "../../lib/cloud";
 
 export default function SubscriptionsPage() {
@@ -35,7 +36,7 @@ export default function SubscriptionsPage() {
 
   if (channels === null) return <div style={{ padding: 24 }}>Loading…</div>;
 
-  const list = videos.filter((v) => channels.includes(v.channel));
+  const list = allVideos().filter((v) => channels.includes(v.channel));
 
   return (
     <div className={styles.page}>
@@ -49,9 +50,15 @@ export default function SubscriptionsPage() {
         <p className={styles.empty}>No recent videos from your subscriptions.</p>
       )}
       {list.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>

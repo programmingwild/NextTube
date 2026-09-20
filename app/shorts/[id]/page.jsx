@@ -25,6 +25,15 @@ export default function ShortPage() {
 
   const video = getVideoById(short.videoId);
 
+  if (!video) {
+    return (
+      <div style={{ padding: 40 }}>
+        <h2>Video unavailable</h2>
+        <Link href="/">← Back</Link>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.shortsPage}>
       <div className={styles.back}><Link href="/">← Back</Link></div>

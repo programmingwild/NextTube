@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MdOutlineWatchLater } from "react-icons/md";
 import styles from "../../styles/SearchPage.module.css";
-import { videos, store } from "../../lib/videos";
+import DbThumb from "../../components/DbThumb";
+import { rowKey, videos, store } from "../../lib/videos";
 
 export default function WatchLaterPage() {
   const router = useRouter();
@@ -37,9 +38,15 @@ export default function WatchLaterPage() {
       </h1>
       {list.length === 0 && <p className={styles.empty}>Save videos with the Save button under any video and they’ll wait for you here.</p>}
       {list.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div style={{ flex: 1 }}>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>

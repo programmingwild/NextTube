@@ -128,6 +128,18 @@ export default function WatchPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [video?.id]);
 
+  // LIVE videos: viewer count ticks like a real stream
+  // (kept above the early return — hooks must run unconditionally)
+  useEffect(() => {
+    if (video?.uploadedAt !== "LIVE") return;
+    setLiveCount(video.viewsCount + extraViews);
+    const t = setInterval(() => {
+      setLiveCount((c) => Math.max(0, c + Math.floor(Math.random() * 31) - 10));
+    }, 3000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [video?.id]);
+
   if (!video) {
     return (
       <div className={styles.notFound}>
@@ -165,16 +177,6 @@ export default function WatchPage() {
     store.setProgress(video.id, v.currentTime, v.duration);
   };
 
-  // LIVE videos: viewer count ticks like a real stream
-  useEffect(() => {
-    if (video?.uploadedAt !== "LIVE") return;
-    setLiveCount(video.viewsCount + extraViews);
-    const t = setInterval(() => {
-      setLiveCount((c) => Math.max(0, c + Math.floor(Math.random() * 31) - 10));
-    }, 3000);
-    return () => clearInterval(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [video?.id]);
   const totalViews = video.viewsCount + extraViews;
   const viewsLabel =
     video.uploadedAt === "LIVE"
@@ -297,20 +299,27 @@ export default function WatchPage() {
   return (
     <div className={`${styles.watch} ${theater ? styles.theaterMode : ""}`}>
       <div className={styles.primary}>
-        <div className={styles.player}>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <video
-            ref={videoRef}
-            key={playSrc || video.videoUrl}
-            src={playSrc}
-            controls
-            autoPlay
-            playsInline
-            onEnded={handleEnded}
-            onLoadedMetadata={handleLoaded}
-            onTimeUpdate={handleTime}
-            onPause={handleTime}
+        <div className={styles.playerWrap}>
+          <div
+            className={styles.ambient}
+            aria-hidden
+            style={{ backgroundImage: `url(${video.thumbnail})` }}
           />
+          <div className={styles.player}>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <video
+              ref={videoRef}
+              key={playSrc || video.videoUrl}
+              src={playSrc}
+              controls
+              autoPlay
+              playsInline
+              onEnded={handleEnded}
+              onLoadedMetadata={handleLoaded}
+              onTimeUpdate={handleTime}
+              onPause={handleTime}
+            />
+          </div>
         </div>
 
         <h1 className={styles.title}>{video.title}</h1>

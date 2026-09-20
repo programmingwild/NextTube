@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap");
+/* Fonts load via <link> in app/layout.jsx (CSS @import of external
+   stylesheets breaks Next dev/Turbopack module runtime). */
 
 :root {
   --yt-bg: #f9f9f9;
@@ -14,8 +15,17 @@
   --yt-search-btn: #f8f8f8;
   --yt-chip: #f2f2f2;
   --yt-chip-hover: #e5e5e5;
-  --yt-header: #ffffff;
+  --yt-header: rgba(255, 255, 255, 0.82);
   --yt-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  /* 3D / depth tokens (restrained, YouTube-faithful) */
+  --yt-lift: 0 1px 2px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.16), 0 24px 48px -12px rgba(0,0,0,0.28);
+  --yt-lift-sm: 0 1px 2px rgba(0,0,0,0.1), 0 6px 16px rgba(0,0,0,0.14);
+  --yt-glass: rgba(255,255,255,0.72);
+  --yt-glass-border: rgba(255,255,255,0.6);
+  --yt-brand: #ff0033;
+  --yt-brand-2: #7c3aed;
+  --yt-ambient: radial-gradient(60% 90% at 50% 0%, rgba(255,0,51,0.08), transparent 70%), radial-gradient(40% 60% at 90% 10%, rgba(124,58,237,0.07), transparent 70%);
+  --yt-font: "Google Sans", "Product Sans", "Product Sans Medium", "Roboto", system-ui, -apple-system, sans-serif;
   color-scheme: light;
 }
 
@@ -33,22 +43,63 @@
   --yt-search-btn: #222222;
   --yt-chip: #272727;
   --yt-chip-hover: #3d3d3d;
-  --yt-header: #0f0f0f;
+  --yt-header: rgba(15, 15, 15, 0.78);
   --yt-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  --yt-lift: 0 1px 2px rgba(0,0,0,0.5), 0 12px 32px rgba(0,0,0,0.5), 0 32px 64px -16px rgba(0,0,0,0.7);
+  --yt-lift-sm: 0 1px 2px rgba(0,0,0,0.5), 0 8px 20px rgba(0,0,0,0.45);
+  --yt-glass: rgba(33,33,33,0.66);
+  --yt-glass-border: rgba(255,255,255,0.09);
+  --yt-ambient: radial-gradient(60% 90% at 50% 0%, rgba(255,0,51,0.14), transparent 70%), radial-gradient(40% 60% at 90% 10%, rgba(124,58,237,0.12), transparent 70%);
   color-scheme: dark;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { min-height: 100%; }
 html { scroll-behavior: smooth; }
+img, video { max-width: 100%; }
+/* Minimum comfortable touch targets on coarse pointers */
+@media (pointer: coarse) {
+  button { min-height: 40px; }
+}
 
 body {
-  font-family: "Roboto", "Inter", system-ui, sans-serif;
+  font-family: var(--yt-font);
   background: var(--yt-bg);
+  background-image: var(--yt-ambient);
+  background-attachment: fixed;
   color: var(--yt-text);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   transition: background 0.25s, color 0.25s;
+}
+
+/* Google Sans throughout — controls don't inherit by default */
+button, input, textarea, select, ::placeholder {
+  font-family: var(--yt-font);
+}
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+::selection { background: rgba(255, 0, 51, 0.85); color: #fff; }
+
+/* Card entrance (Motion Narrative, subtle) */
+@keyframes yt-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+/* Skeleton shimmer like real YouTube */
+@keyframes yt-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+@keyframes yt-pulse-live {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,0,0,0.55); }
+  50% { box-shadow: 0 0 0 6px rgba(255,0,0,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }
 
 body::before, body::after { content: none !important; }

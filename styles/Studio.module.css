@@ -40,6 +40,11 @@
   box-shadow: var(--yt-shadow); margin-bottom: 12px; cursor: pointer;
 }
 .row img { width: 200px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--yt-surface-2); }
+@media (max-width: 560px) {
+  .row { flex-wrap: wrap; }
+  .row img { width: 100%; }
+  .deleteBtn { margin-left: 0; width: 100%; }
+}
 .rowTitle { font-size: 15px; font-weight: 500; }
 .rowMeta { font-size: 12px; color: var(--yt-text-2); margin-top: 4px; }
 .deleteBtn {

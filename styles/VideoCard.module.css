@@ -1,31 +1,57 @@
-.videoCard { cursor: pointer; background: transparent; }
-.thumbWrap { position: relative; }
-.thumbnail {
+.videoCard {
+  cursor: pointer; background: transparent;
+  perspective: 900px;
+  animation: yt-rise 0.45s ease both;
+  border-radius: 14px;
+  transition: transform 0.22s ease;
+}
+.thumbWrap {
+  position: relative;
+  border-radius: 12px;
+  transform-style: preserve-3d;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1.2), box-shadow 0.28s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.videoCard:hover .thumbWrap {
+  transform: translateY(-6px) rotateX(3deg) scale(1.015);
+  box-shadow: var(--yt-lift);
+}
+.thumbnail, .preview {
   width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block;
   border-radius: 12px; background: var(--yt-surface-2);
 }
+.thumbnail { transition: transform 0.35s ease, filter 0.3s; }
+.videoCard:hover .thumbnail { transform: scale(1.04); }
+.preview { position: absolute; inset: 0; }
 .duration {
   position: absolute; right: 6px; bottom: 6px;
   background: rgba(0,0,0,0.8); color: #fff;
+  backdrop-filter: blur(6px);
   font-size: 12px; font-weight: 500;
-  padding: 2px 4px; border-radius: 4px; letter-spacing: 0.02em;
+  padding: 2px 5px; border-radius: 6px; letter-spacing: 0.02em;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 .live {
   position: absolute; right: 6px; bottom: 6px;
-  background: #c00; color: #fff;
-  font-size: 12px; font-weight: 500;
-  padding: 2px 6px; border-radius: 4px;
+  background: linear-gradient(180deg, #e00, #b00); color: #fff;
+  font-size: 12px; font-weight: 600;
+  padding: 2px 7px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.25);
+  animation: yt-pulse-live 1.8s infinite;
 }
 .progressTrack {
   position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
   background: rgba(255,255,255,0.3); border-radius: 0 0 12px 12px; overflow: hidden;
 }
-.progressFill { display: block; height: 100%; background: #f00; }
-.hoverActions { position: absolute; top: 6px; right: 6px; display: none; flex-direction: column; gap: 6px; }
+.progressFill { display: block; height: 100%; background: linear-gradient(90deg, #f00, #ff5e5e); box-shadow: 0 0 8px rgba(255,0,0,0.8); }
+.hoverActions { position: absolute; top: 6px; right: 6px; display: none; flex-direction: column; gap: 6px; transform: translateZ(30px); }
 .hoverActions button {
-  width: 32px; height: 32px; border: none; border-radius: 8px;
-  background: rgba(0,0,0,0.8); color: #fff; cursor: pointer; font-size: 15px;
+  width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.18); border-radius: 8px;
+  background: rgba(10,10,10,0.72); backdrop-filter: blur(8px); color: #fff; cursor: pointer; font-size: 15px;
+  transition: transform 0.15s;
 }
+.hoverActions button:hover { transform: scale(1.1); }
 .videoCard:hover .hoverActions { display: flex; }
 .details { display: flex; gap: 12px; padding-top: 12px; }
 .avatar {
@@ -33,10 +59,13 @@
   color: #fff;
   display: grid; place-items: center;
   font-size: 16px; font-weight: 500;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.3), 0 2px 6px rgba(0,0,0,0.25);
+  border: 2px solid rgba(255,255,255,0.12);
 }
 .meta { flex: 1; min-width: 0; }
 .title {
-  font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--yt-text);
+  font-family: var(--yt-font);
+  font-size: 14.5px; font-weight: 500; line-height: 1.4; letter-spacing: -0.01em; color: var(--yt-text);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   margin-bottom: 4px;
 }
@@ -48,7 +77,14 @@
   color: var(--yt-text); cursor: pointer; font-size: 15px;
   opacity: 0;
 }
-.videoCard:hover .menuButton { opacity: 1; }
+.videoCard:hover .menuButton, .videoCard:focus-within .menuButton { opacity: 1; }
+/* Touch devices: no hover — keep the menu reachable, kill sticky lift */
+@media (hover: none) {
+  .menuButton { opacity: 1; }
+  .videoCard:hover .thumbWrap { transform: none; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+  .videoCard:hover .thumbnail { transform: none; }
+  .hoverActions { display: none; }
+}
 .menuButton:hover { background: var(--yt-surface-2); }
 .menu {
   position: absolute; right: 0; top: 34px; z-index: 60;

@@ -12,8 +12,14 @@
 }
 .card {
   display: flex; align-items: center; gap: 16px; justify-content: space-between;
+  flex-wrap: wrap;
   background: var(--yt-surface); border-radius: 14px; padding: 14px;
   box-shadow: var(--yt-shadow);
+}
+@media (max-width: 560px) {
+  .card { flex-direction: column; align-items: stretch; }
+  .main { width: 100%; }
+  .stack img { width: 80px; }
 }
 .main { display: flex; gap: 14px; align-items: center; flex: 1; min-width: 0; }
 .stack { display: flex; }

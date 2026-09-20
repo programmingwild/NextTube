@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaHistory } from "react-icons/fa";
 import styles from "../../styles/SearchPage.module.css";
-import { videos } from "../../lib/videos";
+import DbThumb from "../../components/DbThumb";
+import { findVideo, rowKey } from "../../lib/videos";
 
 export default function HistoryPage() {
   const router = useRouter();
@@ -25,9 +26,7 @@ export default function HistoryPage() {
 
   if (ids === null) return <div style={{ padding: 24 }}>Loading…</div>;
 
-  const list = ids
-    .map((id) => videos.find((v) => String(v.id) === String(id)))
-    .filter(Boolean);
+  const list = ids.map((id) => findVideo(id)).filter(Boolean);
 
   return (
     <div className={styles.page}>
@@ -41,9 +40,15 @@ export default function HistoryPage() {
       )}
       {list.length === 0 && <p className={styles.empty}>Videos you watch will show up here.</p>}
       {list.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>

@@ -3,13 +3,14 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import styles from "../../styles/SearchPage.module.css";
-import { searchVideos } from "../../lib/videos";
+import DbThumb from "../../components/DbThumb";
+import { searchAll, rowKey } from "../../lib/videos";
 
 function SearchResults() {
   const params = useSearchParams();
   const router = useRouter();
   const q = params.get("q") || "";
-  const results = searchVideos(q);
+  const results = searchAll(q);
 
   return (
     <div className={styles.page}>
@@ -17,9 +18,15 @@ function SearchResults() {
         {results.length} result{results.length === 1 ? "" : "s"} for “{q}”
       </h1>
       {results.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>

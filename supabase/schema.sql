@@ -1,4 +1,4 @@
--- YourTubeNext Supabase schema
+-- NextTube (YouTube Clone) Supabase schema
 -- Run this in the Supabase SQL editor (Dashboard → SQL → New query).
 -- Then enable Email auth (Authentication → Providers → Email) and
 -- create a public storage bucket named "uploads" (Storage → New bucket).

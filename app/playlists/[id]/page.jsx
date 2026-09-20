@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../../../styles/SearchPage.module.css";
-import { videos, store } from "../../../lib/videos";
+import DbThumb from "../../../components/DbThumb";
+import { findVideo, rowKey, store } from "../../../lib/videos";
 
 export default function PlaylistDetailPage() {
   const params = useParams();
@@ -25,9 +26,7 @@ export default function PlaylistDetailPage() {
     );
   }
 
-  const list = pl.ids
-    .map((id) => videos.find((v) => String(v.id) === String(id)))
-    .filter(Boolean);
+  const list = pl.ids.map((id) => findVideo(id)).filter(Boolean);
 
   const removeVideo = (vid) => {
     const updated = store.toggleInPlaylist(pl.id, vid);
@@ -40,9 +39,15 @@ export default function PlaylistDetailPage() {
       <p className={styles.meta}>{list.length} video{list.length === 1 ? "" : "s"}</p>
       {list.length === 0 && <p className={styles.empty}>Nothing here yet — open any video and use the Save button to add it.</p>}
       {list.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div style={{ flex: 1 }}>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.channel} • {v.views}</div>

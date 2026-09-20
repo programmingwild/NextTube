@@ -66,7 +66,7 @@ const UserAccount = ({ onClose, user, onSignOut }) => {
       key,
       amount: 19900, // Rs.199 in paise
       currency: "INR",
-      name: "YourTube Premium",
+      name: "NextTube Premium",
       description: "Unlimited downloads for 1 month",
       // NOTE: production apps create an order_id on the server and pass it here.
       // Without one, Razorpay runs a standalone test checkout — fine for test keys.

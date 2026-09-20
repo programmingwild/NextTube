@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical, BsCheckCircleFill } from "react-icons/bs";
 import styles from "../styles/VideoCard.module.css";
 import { useMediaUrl } from "../lib/media";
@@ -11,13 +11,28 @@ const VideoCard = ({ video, onClick, onHide }) => {
   const [progress, setProgress] = useState(0);
   const [menu, setMenu] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   useEffect(() => {
     const p = store.getProgress(video?.id);
     if (p) setProgress(Math.min(100, (p.time / p.dur) * 100));
     setSaved(store.isWatchLater(video?.id));
   }, [video?.id]);
+  // YouTube-style hover preview: show muted inline video after short dwell
+  const hoverTimer = useRef(null);
+  useEffect(() => {
+    return () => clearTimeout(hoverTimer.current);
+  }, []);
   if (!video) return null;
   const thumbSrc = blobThumb || video.thumbnail;
+  const canPreview = !blobThumb && video.videoUrl && !String(video.videoUrl).startsWith("/videos");
+  const onEnter = () => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => canPreview && setPreviewing(true), 600);
+  };
+  const onLeave = () => {
+    clearTimeout(hoverTimer.current);
+    setPreviewing(false);
+  };
 
   const toggleSave = (e) => {
     e.stopPropagation();
@@ -35,13 +50,26 @@ const VideoCard = ({ video, onClick, onHide }) => {
   };
 
   return (
-    <div className={styles.videoCard} onClick={onClick}>
+    <div className={styles.videoCard} onClick={onClick} onMouseEnter={onEnter} onMouseLeave={onLeave}>
       <div className={styles.thumbWrap}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={thumbSrc} alt={video.title} className={styles.thumbnail} loading="lazy" />
-        <span className={video.duration === "LIVE" ? styles.live : styles.duration}>
-          {video.duration}
-        </span>
+        {previewing && canPreview && (
+          <video
+            className={styles.preview}
+            src={video.videoUrl}
+            muted
+            autoPlay
+            loop
+            playsInline
+            preload="metadata"
+          />
+        )}
+        {!previewing && (
+          <span className={video.duration === "LIVE" ? styles.live : styles.duration}>
+            {video.duration}
+          </span>
+        )}
         {progress > 1 && (
           <span className={styles.progressTrack}>
             <span className={styles.progressFill} style={{ width: `${progress}%` }} />

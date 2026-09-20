@@ -15,13 +15,23 @@ import { useSidebar } from "./SidebarContext";
 import { searchVideos, videos } from "../lib/videos";
 
 const Header = () => {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, setMobileOpen } = useSidebar();
   const router = useRouter();
   const [showUserAccount, setShowUserAccount] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   const [readIds, setReadIds] = useState([]);
   const [uploads, setUploads] = useState([]);
+  const [mobileSearch, setMobileSearch] = useState(false);
   const { user, cloud } = useSession();
+
+  const onMenu = () => {
+    // Real YouTube behavior: hamburger opens a drawer overlay on phones
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches) {
+      setMobileOpen(true);
+    } else {
+      toggleSidebar();
+    }
+  };
 
   useEffect(() => {
     import("../lib/videos").then((m) => setUploads(m.store.getUploads()));
@@ -31,6 +41,33 @@ const Header = () => {
   }, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [focused, setFocused] = useState(false);
+  const [listening, setListening] = useState(false);
+
+  const startVoice = () => {
+    const SR = typeof window !== "undefined" && (window.SpeechRecognition || window.webkitSpeechRecognition);
+    if (!SR) {
+      alert("Voice search not supported in this browser. Try Chrome.");
+      return;
+    }
+    try {
+      const rec = new SR();
+      rec.lang = "en-IN";
+      rec.interimResults = false;
+      setListening(true);
+      rec.onresult = (e) => {
+        const text = e.results?.[0]?.[0]?.transcript;
+        if (text) {
+          setSearchTerm(text);
+          router.push(`/search?q=${encodeURIComponent(text)}`);
+        }
+      };
+      rec.onend = () => setListening(false);
+      rec.onerror = () => setListening(false);
+      rec.start();
+    } catch {
+      setListening(false);
+    }
+  };
 
   const results = searchTerm.trim() ? searchVideos(searchTerm).slice(0, 6) : [];
   const showSuggest = focused && searchTerm.trim().length > 0;
@@ -60,18 +97,46 @@ const Header = () => {
 
   return (
     <>
-      <header className={styles.header}>
+      <header className={`${styles.header} ${mobileSearch ? styles.searchOpen : ""}`}>
+        {mobileSearch && (
+          <div className={styles.mobileSearchBar}>
+            <button
+              className={styles.iconButton}
+              aria-label="Back"
+              onClick={() => setMobileSearch(false)}
+            >
+              ←
+            </button>
+            <input
+              type="text"
+              placeholder="Search NextTube"
+              className={styles.searchInput}
+              style={{ borderRadius: 20 }}
+              value={searchTerm}
+              autoFocus
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setMobileSearch(false);
+                  goSearch();
+                }
+              }}
+              aria-label="Search"
+            />
+            <button className={styles.searchButton} onClick={() => { setMobileSearch(false); goSearch(); }} aria-label="Search" title="Search">
+              <AiOutlineSearch className={styles.searchIcon} />
+            </button>
+          </div>
+        )}
         <div className={styles.left}>
-          <button className={styles.iconButton} onClick={toggleSidebar} aria-label="Menu" title="Menu">
+          <button className={styles.iconButton} onClick={onMenu} aria-label="Menu" title="Menu">
             <FaBars className={styles.icon} />
           </button>
-          <Link href="/" className={styles.logo} title="YouTube Home">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"
-              alt="YouTube"
-              className={styles.logoImage}
-            />
+          <Link href="/" className={styles.logo} title="NextTube Home">
+            <span className={styles.logoMark} aria-hidden>
+              <span className={styles.logoPlay} />
+            </span>
+            <span className={styles.logoWord}>NextTube<span> Clone</span></span>
             <span className={styles.countryCode}>IN</span>
           </Link>
         </div>
@@ -105,12 +170,25 @@ const Header = () => {
               </div>
             )}
           </div>
-          <button className={styles.micButton} aria-label="Search with your voice" title="Search with your voice">
+          <button
+            className={`${styles.micButton} ${listening ? styles.listening : ""}`}
+            aria-label="Search with your voice"
+            title="Search with your voice"
+            onClick={startVoice}
+          >
             <FaMicrophone />
           </button>
         </div>
 
         <div className={styles.right}>
+          <button
+            className={`${styles.iconButton} ${styles.mobileSearchBtn}`}
+            aria-label="Search"
+            title="Search"
+            onClick={() => setMobileSearch(true)}
+          >
+            <AiOutlineSearch className={styles.icon} />
+          </button>
           <ThemeToggle />
           <button className={styles.createButton} title="Create">
             <MdAdd size={20} /> <span>Create</span>

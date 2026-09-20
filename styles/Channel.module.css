@@ -18,7 +18,9 @@
   flex-shrink: 0;
 }
 .subbed { background: var(--yt-surface-2) !important; color: var(--yt-text) !important; }
-.tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--yt-border); margin: 12px 0 20px; font-size: 14px; font-weight: 500; }
+.tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--yt-border); margin: 12px 0 20px; font-size: 14px; font-weight: 500; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs span { flex-shrink: 0; }
 .tabs span { padding: 10px 2px; cursor: pointer; color: var(--yt-text-2); }
 .activeTab { color: var(--yt-text) !important; border-bottom: 2px solid var(--yt-text); }
 @media (max-width: 640px) {

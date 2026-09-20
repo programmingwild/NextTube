@@ -6,7 +6,8 @@ import Link from "next/link";
 import { BsCheckCircleFill } from "react-icons/bs";
 import styles from "../../../styles/SearchPage.module.css";
 import chStyles from "../../../styles/Channel.module.css";
-import { videos, store } from "../../../lib/videos";
+import DbThumb from "../../../components/DbThumb";
+import { videos, rowKey, store } from "../../../lib/videos";
 
 export default function ChannelPage() {
   const params = useParams();
@@ -65,9 +66,15 @@ export default function ChannelPage() {
       </div>
 
       {all.map((v) => (
-        <div key={v.id} className={styles.row} onClick={() => router.push(`/watch/${v.id}`)}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={v.thumbnail} alt={v.title} loading="lazy" />
+        <div
+          key={v.id}
+          className={styles.row}
+          role="link"
+          tabIndex={0}
+          onClick={() => router.push(`/watch/${v.id}`)}
+          onKeyDown={rowKey(() => router.push(`/watch/${v.id}`))}
+        >
+          <DbThumb video={v} />
           <div>
             <div className={styles.title}>{v.title}</div>
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>
