@@ -32,11 +32,11 @@ function SearchResults() {
             <div className={styles.meta}>{v.views} • {v.uploadedAt}</div>
             <div className={styles.channelRow}>
               <span className={styles.avatar} style={{ background: v.avatarColor || "#606060" }}>
-                {v.channel.charAt(0)}
+                {(v.channel || "?").charAt(0)}
               </span>
               <span className={styles.channel}>{v.channel}</span>
             </div>
-            <div className={styles.desc}>{v.description.slice(0, 140)}...</div>
+            <div className={styles.desc}>{(v.description || "").slice(0, 140)}...</div>
           </div>
         </div>
       ))}

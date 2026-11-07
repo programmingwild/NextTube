@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser, FaSignOutAlt, FaCogs, FaLanguage, FaKeyboard, FaGlobe, FaMoon, FaCheckCircle } from "react-icons/fa";
 import { MdSwitchAccount, MdDataUsage, MdHelpOutline, MdAddHome } from "react-icons/md";
 import { SiYoutubestudio } from "react-icons/si";
@@ -31,9 +31,14 @@ function ensureSdk(timeoutMs = 8000) {
 }
 
 const UserAccount = ({ onClose, user, onSignOut }) => {
-  const [isPremium, setIsPremium] = useState(
-    () => typeof window !== "undefined" && localStorage.getItem("isPremiumUser") === "true"
-  );
+  // Server renders false; client syncs after mount to avoid hydration mismatch
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    try {
+      setIsPremium(localStorage.getItem("isPremiumUser") === "true");
+    } catch {}
+  }, []);
   const [busy, setBusy] = useState(false);
 
   const handlePremiumClick = async () => {

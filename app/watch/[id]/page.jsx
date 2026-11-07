@@ -10,7 +10,7 @@ import { BsThreeDots, BsCheckCircleFill } from "react-icons/bs";
 import { MdOutlineWatchLater, MdOutlineTheaters, MdPlaylistAdd } from "react-icons/md";
 import styles from "../../../styles/Watch.module.css";
 import DbThumb from "../../../components/DbThumb";
-import { getAnyVideo, videos, formatCount, rankVideos, store } from "../../../lib/videos";
+import { getAnyVideo, videos, formatCount, rankVideos, store, rowKey } from "../../../lib/videos";
 import { useMediaUrl } from "../../../lib/media";
 import { cloudGetLikes, cloudSetLike, cloudGetSubs, cloudToggleSub, cloudGetComments, cloudPostComment } from "../../../lib/cloud";
 
@@ -327,7 +327,7 @@ export default function WatchPage() {
         <div className={styles.row}>
           <div className={styles.channel}>
             <span className={styles.avatar} style={{ background: video.avatarColor || "#606060" }}>
-              {video.channel.charAt(0)}
+              {(video.channel || "?").charAt(0)}
             </span>
             <div>
               <div className={styles.name}>
@@ -385,32 +385,36 @@ export default function WatchPage() {
             >
               <MdOutlineTheaters size={19} /> {theater ? "Default" : "Theater"}
             </button>
-            <span className={styles.plWrap}>
+            <div className={styles.plWrap}>
               <button className={styles.pill} onClick={() => setShowPl((s) => !s)} title="Save to playlist">
                 <MdPlaylistAdd size={19} /> Save
               </button>
               {showPl && (
-                <span className={styles.plPop}>
+                <div className={styles.plPop}>
                   <h4>Save to playlist</h4>
                   {playlists.length === 0 && <h4 style={{ fontWeight: 400 }}>No playlists yet.</h4>}
                   {playlists.map((p) => (
-                    <button
+                    <div
                       key={p.id}
+                      role="button"
+                      tabIndex={0}
                       className={styles.plItem}
                       onClick={() => setPlaylists((pls) => pls.map((x) => x.id === p.id ? store.toggleInPlaylist(p.id, video.id) : x))}
+                      onKeyDown={rowKey(() => setPlaylists((pls) => pls.map((x) => x.id === p.id ? store.toggleInPlaylist(p.id, video.id) : x)))}
                     >
                       <input
                         type="checkbox"
                         readOnly
+                        tabIndex={-1}
                         checked={p.ids.some((x) => String(x) === String(video.id))}
                       />
                       {p.name}
-                    </button>
+                    </div>
                   ))}
                   <Link href="/playlists" className={styles.plLink}>+ New playlist</Link>
-                </span>
+                </div>
               )}
-            </span>
+            </div>
             <button className={styles.pill} aria-label="More actions">
               <BsThreeDots size={17} />
             </button>
@@ -422,7 +426,7 @@ export default function WatchPage() {
             {viewsLabel} • {video.uploadedAt} • #{video.category}
           </div>
           <div style={{ whiteSpace: "pre-line" }}>
-            {expanded ? renderDesc(video.description) : `${video.description.slice(0, 130)}...more`}
+            {expanded ? renderDesc(video.description || "") : `${(video.description || "").slice(0, 130)}...more`}
           </div>
         </div>
 
@@ -444,7 +448,7 @@ export default function WatchPage() {
         )}
         {comments.map((c) => (
           <div key={c.id} className={styles.comment}>
-            <span className={styles.commentAvatar}>{c.user.charAt(0)}</span>
+            <span className={styles.commentAvatar}>{(c.user || "?").charAt(0)}</span>
             <div style={{ flex: 1 }}>
               <div className={styles.commentHead}><b>@{c.user}</b><span>{c.time}</span></div>
               <div className={styles.commentText}>{c.text}</div>
@@ -463,7 +467,7 @@ export default function WatchPage() {
               </div>
               {(c.replies || []).map((r) => (
                 <div key={r.id} className={styles.comment} style={{ margin: "10px 0 0" }}>
-                  <span className={styles.commentAvatar}>{r.user.charAt(0)}</span>
+                  <span className={styles.commentAvatar}>{(r.user || "?").charAt(0)}</span>
                   <div style={{ flex: 1 }}>
                     <div className={styles.commentHead}><b>@{r.user}</b><span>{r.time}</span></div>
                     <div className={styles.commentText}>{r.text}</div>

@@ -12,7 +12,12 @@ import { videos, rowKey, store } from "../../../lib/videos";
 export default function ChannelPage() {
   const params = useParams();
   const router = useRouter();
-  const name = decodeURIComponent(params?.name || "");
+  let name = "";
+  try {
+    name = decodeURIComponent(params?.name || "");
+  } catch {
+    name = params?.name || "";
+  }
   const [subscribed, setSubscribed] = useState(false);
   const [uploads, setUploads] = useState([]);
 
@@ -40,7 +45,7 @@ export default function ChannelPage() {
       <div className={chStyles.bannerArt} style={{ "--art": info.avatarColor || "#606060" }} />
       <div className={chStyles.banner}>
         <span className={chStyles.bigAvatar} style={{ background: info.avatarColor || "#606060" }}>
-          {name.charAt(0)}
+          {(name || "?").charAt(0)}
         </span>
         <div style={{ flex: 1 }}>
           <h1 className={chStyles.name}>

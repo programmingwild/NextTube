@@ -82,7 +82,7 @@ const VideoCard = ({ video, onClick, onHide }) => {
       </div>
       <div className={styles.details}>
         <span className={styles.avatar} style={{ background: video.avatarColor || "#606060" }}>
-          {video.channel.charAt(0)}
+          {(video.channel || "?").charAt(0)}
         </span>
         <div className={styles.meta}>
           <h3 className={styles.title}>{video.title}</h3>
